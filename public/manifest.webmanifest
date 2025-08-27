@@ -1,0 +1,19 @@
+{
+  "name": "Finance Planner",
+  "short_name": "Finance",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "description": "Track incomes, savings, expenses, and future savings projections.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
+
+
