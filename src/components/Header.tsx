@@ -1,32 +1,37 @@
-// src/components/Header.tsx
 "use client";
 
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { auth, googleProvider } from "@/lib/firebase";
+import { onAuthStateChanged, signInWithPopup, signOut, type User } from "firebase/auth";
 
-export default function Header() {
+export function Header() {
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => onAuthStateChanged(auth, (u) => setUser(u)), []);
+
   return (
-    <header className="bg-blue-600 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-lg font-bold">Finance Planner</h1>
-        <nav>
-          <ul className="flex space-x-4">
-            <li>
-              <Link href="/" className="hover:underline">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/about" className="hover:underline">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:underline">
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </nav>
+    <header className="sticky top-0 z-10 border-b border-blue-100 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
+      <div className="mx-auto max-w-5xl px-6 py-3 flex items-center justify-between">
+        <div className="text-base sm:text-lg font-semibold tracking-tight">Finance Planner</div>
+        <div className="flex items-center gap-3">
+          {user ? (
+            <>
+              <span className="hidden sm:inline text-sm opacity-90">{user.displayName ?? user.email}</span>
+              <button
+                className="rounded-md bg-white/10 hover:bg-white/20 px-3 py-1 text-sm"
+                onClick={() => signOut(auth)}
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <button
+              className="rounded-md bg-white text-blue-600 hover:bg-blue-50 px-3 py-1 text-sm"
+              onClick={() => signInWithPopup(auth, googleProvider)}
+            >
+              Sign in
+            </button>
+          )}
+        </div>
       </div>
     </header>
   );
